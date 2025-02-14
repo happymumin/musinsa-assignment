@@ -1,0 +1,26 @@
+
+server:
+  port: 5002
+  http2:
+    enabled: true
+
+
+logging:
+  level:
+    root: info
+
+
+spring:
+  application:
+    name: musinsa-coodinator
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  datasource:
+    url: # required
+    username: # required
+    password: # required
+    hikari:
+      minimum-idle: # required
+      maximum-pool-size: # required
