@@ -3,8 +3,10 @@ package com.musinsa.coordinator
 import com.musinsa.coordinator.config.Env
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import java.util.TimeZone
+import org.springframework.scheduling.annotation.EnableScheduling
+import java.util.*
 
+@EnableScheduling
 @SpringBootApplication
 class Application
 

@@ -1,0 +1,25 @@
+logging:
+  level:
+    root: INFO
+    com.musinsa: DEBUG
+
+
+spring:
+  test:
+    database:
+      replace: none
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 5
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.hbm2ddl.auto: create-drop
+    database: h2
+    defer-datasource-initialization: true
+
