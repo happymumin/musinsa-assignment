@@ -1,8 +1,8 @@
 logging:
   level:
     root: INFO
+    org.springframework.web.reactive: DEBUG
     com.musinsa: DEBUG
-
 
 spring:
   test:

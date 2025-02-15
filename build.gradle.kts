@@ -1,12 +1,12 @@
 plugins {
     val kotlinVersion = "1.9.25"
+    id("org.springframework.boot") version "3.3.4"
+    id("io.spring.dependency-management") version "1.1.6"
+
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
-
-    id("org.springframework.boot") version "3.4.2"
-    id("io.spring.dependency-management") version "1.1.7"
     idea
 }
 
@@ -34,6 +34,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
