@@ -35,6 +35,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.arrow-kt:arrow-fx-coroutines:1.1.3") // https://arrow-kt.io/learn/quickstart/
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 

@@ -24,3 +24,7 @@ spring:
     properties:
       hibernate.hbm2ddl.auto: create-drop
       hibernate.format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:data/data.sql

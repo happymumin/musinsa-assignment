@@ -19,7 +19,7 @@ class BrandService(
 
     @Transactional
     fun updateSync(brandId: BrandId, request: BrandCreateOrUpdateRequest): Brand {
-        val brand = getEnabledOrThrow(brandId)
+        val brand = getEnabledOrThrowSync(brandId)
         brand.name = request.name
         brandRepository.save(brand)
         return brand
@@ -27,16 +27,17 @@ class BrandService(
 
     @Transactional
     fun deleteSync(brandId: BrandId) {
-        val brand = getEnabledOrThrow(brandId)
+        val brand = getEnabledOrThrowSync(brandId)
         brand.enabled = false
         brandRepository.save(brand)
     }
 
-    private fun getEnabledOrThrow(brandId: BrandId): Brand {
-        return getOrThrow(brandId).takeIf { it.enabled } ?: throw BrandException(BrandErrorCode.DELETED_BRAND)
+    @Transactional(readOnly = true)
+    fun getEnabledOrThrowSync(brandId: BrandId): Brand {
+        return getOrThrowSync(brandId).takeIf { it.enabled } ?: throw BrandException(BrandErrorCode.DELETED_BRAND)
     }
 
-    private fun getOrThrow(brandId: BrandId): Brand {
+    private fun getOrThrowSync(brandId: BrandId): Brand {
         return brandRepository.findById(brandId).getOrNull() ?: throw BrandException(BrandErrorCode.NOT_FOUND_BRAND)
     }
 }
