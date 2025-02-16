@@ -1,6 +1,7 @@
 package com.musinsa.coordinator.domain.stat.dto
 
 import com.musinsa.coordinator.domain.brand.Brand
+import com.musinsa.coordinator.domain.category.Category
 import com.musinsa.coordinator.domain.category.dto.CategoryManager
 import com.musinsa.coordinator.domain.product.dto.MinPriceWithBrandCategory
 import com.musinsa.coordinator.domain.product.dto.ProductWithBrandDetail
@@ -66,5 +67,35 @@ data class CheapestBrandWithMinPriceByCategoryResponse(
             )
         }
     }
-
 }
+
+class CategoryWithMinMaxPriceAndBrandResponse(
+    val categoryName: String,
+    val minPrice: Data,
+    val maxPrice: Data
+) {
+    class Data(
+        val brandName: String,
+        val price: Int,
+    )
+
+    companion object {
+        fun of(
+            category: Category,
+            minPriceProduct: ProductWithBrandDetail,
+            maxPriceProduct: ProductWithBrandDetail,
+        ): CategoryWithMinMaxPriceAndBrandResponse {
+            return CategoryWithMinMaxPriceAndBrandResponse(
+                categoryName = category.name,
+                minPrice = Data(
+                    brandName = minPriceProduct.brandName,
+                    price = minPriceProduct.product.price
+                ), maxPrice = Data(
+                    brandName = maxPriceProduct.brandName,
+                    price = maxPriceProduct.product.price
+                )
+            )
+        }
+    }
+}
+

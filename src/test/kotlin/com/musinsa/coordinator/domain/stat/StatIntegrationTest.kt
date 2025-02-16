@@ -68,11 +68,27 @@ class StatIntegrationTest(
     }
 
     @Test
+    fun `카테고리 이름으로 해당 카테고리의 최저가,최고가 상품의 가격과 브랜드를 조회할 수 있다`() {
+        runBlocking {
+            val result = client.getCategoryWithMinMaxPriceAndBrand("아우터")
+
+            assertThat(result)
+                .returns("아우터") { it.categoryName }
+                .returns(800) { it.minPrice.price }
+                .returns("브랜드 1") { it.minPrice.brandName }
+                .returns(15000) { it.maxPrice.price }
+                .returns("브랜드 2") { it.maxPrice.brandName }
+        }
+    }
+
+
+    @Test
     fun `카테고리별 최저가 상품 총액이 가장 저렴한 단일 브랜드 조회할 수 있다`() {
         runBlocking {
             val result = client.getCheapestBrandWithMinPriceByCategory()
-            assertThat(result.minPrice.totalPrice).isEqualTo(47500)
-            assertThat(result.minPrice.brandName).isEqualTo("브랜드 4")
+            assertThat(result.minPrice)
+                .returns(47500) { it.totalPrice }
+                .returns("브랜드 4") { it.brandName }
         }
     }
 

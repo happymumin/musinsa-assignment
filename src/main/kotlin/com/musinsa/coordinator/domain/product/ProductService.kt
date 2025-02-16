@@ -77,6 +77,13 @@ class ProductService(
         )
     }
 
+    fun findMaxPriceSellingProductByCategorySync(categoryId: CategoryId): ProductWithBrandDetail? {
+        return productRepository.findProductWithBrandDetailFirst(
+            predicate = ProductPredicate.categoryIdEqAndSelling(categoryId),
+            order = qProduct.price.desc()
+        )
+    }
+
     fun getMinPriceByBrandCategorySync(): List<MinPriceWithBrandCategory> {
         return productRepository.getMinPriceByBrandCategory()
     }

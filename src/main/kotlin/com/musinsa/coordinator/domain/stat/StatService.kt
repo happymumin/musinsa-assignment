@@ -1,5 +1,6 @@
 package com.musinsa.coordinator.domain.stat
 
+import arrow.fx.coroutines.parZip
 import com.musinsa.coordinator.domain.brand.Brand
 import com.musinsa.coordinator.domain.brand.BrandService
 import com.musinsa.coordinator.domain.category.CategoryService
@@ -32,6 +33,16 @@ class StatService(
             }
             .flatten()
             .associateBy { it.product.categoryId }
+    }
+
+    suspend fun getMinMaxPriceAdBrand(categoryId: CategoryId): Pair<ProductWithBrandDetail, ProductWithBrandDetail> {
+        return parZip(
+            Dispatchers.IO,
+            { productService.findMinPriceSellingProductByCategorySync(categoryId)!! },
+            { productService.findMaxPriceSellingProductByCategorySync(categoryId)!! }
+        ) { minPriceProduct, maxPriceProduct ->
+            minPriceProduct to maxPriceProduct
+        }
     }
 
     suspend fun getCheapestBrandWithMinPriceByCategory(): Pair<Brand, List<MinPriceWithBrandCategory>> {
