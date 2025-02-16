@@ -4,6 +4,7 @@ import com.musinsa.coordinator.domain.category.CategoryService
 import com.musinsa.coordinator.domain.product.dto.ProductWithBrandDetail
 import com.musinsa.coordinator.domain.stat.StatService
 import com.musinsa.coordinator.domain.stat.dto.CategoriesWithMinPriceAndBrandResponse
+import com.musinsa.coordinator.domain.stat.dto.CheapestBrandWithMinPriceByCategoryResponse
 import com.musinsa.coordinator.util.CategoryId
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,4 +30,14 @@ class StatController(
         )
     }
 
+    @Operation(summary = "카테고리별 총액이 가장 저렴한 단일 브랜드 조회")
+    @GetMapping("/v1/stats/brands/min-total-price")
+    suspend fun getCheapestBrandWithMinPriceByCategory(): CheapestBrandWithMinPriceByCategoryResponse {
+        val (brand, minPriceWithCategory) = statService.getCheapestBrandWithMinPriceByCategory()
+        return CheapestBrandWithMinPriceByCategoryResponse.of(
+            brand = brand,
+            minPriceWithCategory = minPriceWithCategory,
+            categoryManager = categoryService.getCategoryManager()
+        )
+    }
 }

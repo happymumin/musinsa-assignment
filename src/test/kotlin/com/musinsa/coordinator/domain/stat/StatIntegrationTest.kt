@@ -26,10 +26,7 @@ class StatIntegrationTest(
     fun beforeEach() {
         brandRepository.deleteAll()
         productRepository.deleteAll()
-    }
 
-    @Test
-    fun `카테고리별 최저가 상품의 가격과 브랜드를 조회할 수 있다`() {
         runBlocking {
             val brands = (1..4).map {
                 client.createBrand(BrandCreateOrUpdateRequest("브랜드 $it"))
@@ -37,12 +34,12 @@ class StatIntegrationTest(
 
             // category 100
             createProduct("100", brands[0].id, 1000)
-            createProduct("100", brands[1].id, 500) // minPrice
+            createProduct("100", brands[1].id, 500)
             createProduct("100", brands[2].id, 2000)
             createProduct("100", brands[3].id, 3000)
 
             // category 200
-            createProduct("200", brands[0].id, 800) // minPrice
+            createProduct("200", brands[0].id, 800)
             createProduct("200", brands[1].id, 15000)
             createProduct("200", brands[2].id, 3000)
             createProduct("200", brands[3].id, 8000)
@@ -51,20 +48,32 @@ class StatIntegrationTest(
             createProduct("300", brands[0].id, 50000)
             createProduct("300", brands[1].id, 80000)
             createProduct("300", brands[2].id, 100000)
-            createProduct("300", brands[3].id, 28000) // minPrice
+            createProduct("300", brands[3].id, 28000)
 
             // category 400
             createProduct("400", brands[0].id, 16000)
             createProduct("400", brands[1].id, 500000)
-            createProduct("400", brands[2].id, 8000) // minPrice
+            createProduct("400", brands[2].id, 8000)
             createProduct("400", brands[3].id, 8500)
+        }
+    }
 
+    @Test
+    fun `카테고리별 최저가 상품의 가격과 브랜드를 조회할 수 있다`() {
+        runBlocking {
             val result = client.getCategoriesWithMinPriceAndBrandStat()
-
             assertEquals(result.totalPrice, 500 + 800 + 28000 + 8000)
             assertThat(result.categories.map { it.minPrice }).containsAll(setOf(500, 800, 28000, 8000))
         }
+    }
 
+    @Test
+    fun `카테고리별 최저가 상품 총액이 가장 저렴한 단일 브랜드 조회할 수 있다`() {
+        runBlocking {
+            val result = client.getCheapestBrandWithMinPriceByCategory()
+            assertThat(result.minPrice.totalPrice).isEqualTo(47500)
+            assertThat(result.minPrice.brandName).isEqualTo("브랜드 4")
+        }
     }
 
     private suspend fun createProduct(categoryId: CategoryId, brandId: BrandId, price: Int): ProductCreateResponse {

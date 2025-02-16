@@ -5,6 +5,7 @@ import com.musinsa.coordinator.domain.brand.BrandService
 import com.musinsa.coordinator.domain.category.CategoryService
 import com.musinsa.coordinator.domain.product.Product.Status.DELETED
 import com.musinsa.coordinator.domain.product.Product.Status.SELLING
+import com.musinsa.coordinator.domain.product.dto.MinPriceWithBrandCategory
 import com.musinsa.coordinator.domain.product.dto.ProductWithBrandDetail
 import com.musinsa.coordinator.domain.product.rest.ProductErrorCode
 import com.musinsa.coordinator.domain.product.rest.dto.ProductCreateOrUpdateRequest
@@ -24,14 +25,6 @@ class ProductService(
     private val brandService: BrandService,
     private val txHolder: TransactionTemplateHolder
 ) {
-
-    fun findMinPriceEnabledProductByCategorySync(categoryId: CategoryId): ProductWithBrandDetail? {
-        return productRepository.findProductWithBrandDetailFirst(
-            predicate = ProductPredicate.categoryIdEqAndSelling(categoryId),
-            order = qProduct.price.asc()
-        )
-    }
-
     suspend fun create(request: ProductCreateOrUpdateRequest): Product {
         categoryService.getCategoryManager().getByIdOrThrow(request.categoryId)
         return withContext(Dispatchers.IO) {
@@ -75,6 +68,17 @@ class ProductService(
         val product = getSellingOrThrowSync(productId)
         product.status = DELETED
         productRepository.save(product)
+    }
+
+    fun findMinPriceSellingProductByCategorySync(categoryId: CategoryId): ProductWithBrandDetail? {
+        return productRepository.findProductWithBrandDetailFirst(
+            predicate = ProductPredicate.categoryIdEqAndSelling(categoryId),
+            order = qProduct.price.asc()
+        )
+    }
+
+    fun getMinPriceByBrandCategorySync(): List<MinPriceWithBrandCategory> {
+        return productRepository.getMinPriceByBrandCategory()
     }
 
     private fun getSellingOrThrowSync(productId: ProductId): Product {

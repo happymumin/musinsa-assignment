@@ -1,6 +1,9 @@
 package com.musinsa.coordinator.domain.product
 
+import com.musinsa.coordinator.domain.product.Product.Status.SELLING
+import com.musinsa.coordinator.domain.product.dto.MinPriceWithBrandCategory
 import com.musinsa.coordinator.domain.product.dto.ProductWithBrandDetail
+import com.musinsa.coordinator.domain.product.dto.QMinPriceWithBrandCategory
 import com.musinsa.coordinator.domain.product.dto.QProductWithBrandDetail
 import com.musinsa.coordinator.util.ProductId
 import com.querydsl.core.types.OrderSpecifier
@@ -21,6 +24,9 @@ interface QProductRepository {
 
     @Transactional(readOnly = true)
     fun findProductWithBrandDetailFirst(predicate: Predicate, order: OrderSpecifier<*>): ProductWithBrandDetail?
+
+    @Transactional(readOnly = true)
+    fun getMinPriceByBrandCategory(): List<MinPriceWithBrandCategory>
 }
 
 @Repository
@@ -37,5 +43,15 @@ class QProductRepositoryImpl(private val entityManager: EntityManager) : QProduc
             .where(predicate)
             .orderBy(order)
             .fetchFirst()
+    }
+
+    override fun getMinPriceByBrandCategory(): List<MinPriceWithBrandCategory> {
+        return JPAQuery<MinPriceWithBrandCategory>(entityManager)
+            .select(QMinPriceWithBrandCategory(qProduct.price.min(), qProduct.brandId, qProduct.categoryId))
+            .from(qProduct)
+            .join(qBrand).on(qProduct.brandId.eq(qBrand.id).and(qBrand.enabled.isTrue))
+            .where(qProduct.status.eq(SELLING))
+            .groupBy(qProduct.brandId, qProduct.categoryId)
+            .fetch()
     }
 }
