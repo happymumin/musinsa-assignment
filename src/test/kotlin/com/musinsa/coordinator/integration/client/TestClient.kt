@@ -1,9 +1,10 @@
 package com.musinsa.coordinator.integration.client
 
-import com.musinsa.coordinator.domain.brand.dto.BrandCreateOrUpdateRequest
-import com.musinsa.coordinator.domain.brand.dto.BrandCreateResponse
-import com.musinsa.coordinator.domain.product.dto.ProductCreateOrUpdateRequest
-import com.musinsa.coordinator.domain.product.dto.ProductCreateResponse
+import com.musinsa.coordinator.domain.brand.rest.dto.BrandCreateOrUpdateRequest
+import com.musinsa.coordinator.domain.brand.rest.dto.BrandCreateResponse
+import com.musinsa.coordinator.domain.product.rest.dto.ProductCreateOrUpdateRequest
+import com.musinsa.coordinator.domain.product.rest.dto.ProductCreateResponse
+import com.musinsa.coordinator.domain.stat.dto.CategoriesWithMinPriceAndBrandResponse
 import com.musinsa.coordinator.util.BrandId
 import com.musinsa.coordinator.util.ProductId
 import org.springframework.web.reactive.function.client.WebClient
@@ -77,5 +78,17 @@ class TestClient(private val client: WebClient) {
             .uri("/api/v1/products/${productId}")
             .retrieve()
             .awaitBody()
+    }
+
+    // ========================= stat ======================
+    /**
+     * @see [com.musinsa.coordinator.domain.stat.rest.StatController.getCategoriesWithMinPriceAndBrand]
+     */
+    suspend fun getCategoriesWithMinPriceAndBrandStat(): CategoriesWithMinPriceAndBrandResponse {
+        return client.get()
+            .uri("/api/v1/stats/categories/min-price-brand")
+            .retrieve()
+            .awaitBody<CategoriesWithMinPriceAndBrandResponse>()
+
     }
 }

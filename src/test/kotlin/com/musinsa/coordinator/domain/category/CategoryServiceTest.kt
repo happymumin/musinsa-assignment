@@ -12,7 +12,7 @@ class CategoryServiceTest {
     private val service = CategoryService(categoryRepository)
 
     @Test
-    fun `카테고리 ID로 카테고리를 조회한다`() {
+    fun `카테고리 ID로 카테고리 매니저를 조회한다`() {
         runBlocking {
             val targetCategoryId = "100"
 
@@ -23,7 +23,7 @@ class CategoryServiceTest {
                 )
             )
 
-            val result = service.getOrNull(targetCategoryId)
+            val result = service.getCategoryManager().getByIdOrNull(targetCategoryId)
 
             assertEquals(result?.name, "상의")
         }

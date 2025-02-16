@@ -5,14 +5,17 @@ import com.musinsa.coordinator.domain.brand.BrandService
 import com.musinsa.coordinator.domain.category.CategoryService
 import com.musinsa.coordinator.domain.product.Product.Status.DELETED
 import com.musinsa.coordinator.domain.product.Product.Status.SELLING
-import com.musinsa.coordinator.domain.product.dto.ProductCreateOrUpdateRequest
+import com.musinsa.coordinator.domain.product.dto.ProductWithBrandDetail
 import com.musinsa.coordinator.domain.product.rest.ProductErrorCode
+import com.musinsa.coordinator.domain.product.rest.dto.ProductCreateOrUpdateRequest
+import com.musinsa.coordinator.util.CategoryId
 import com.musinsa.coordinator.util.ProductId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
+import com.musinsa.coordinator.domain.product.QProduct.product as qProduct
 
 @Service
 class ProductService(
@@ -22,8 +25,15 @@ class ProductService(
     private val txHolder: TransactionTemplateHolder
 ) {
 
+    fun findMinPriceEnabledProductByCategorySync(categoryId: CategoryId): ProductWithBrandDetail? {
+        return productRepository.findProductWithBrandDetailFirst(
+            predicate = ProductPredicate.categoryIdEqAndSelling(categoryId),
+            order = qProduct.price.asc()
+        )
+    }
+
     suspend fun create(request: ProductCreateOrUpdateRequest): Product {
-        categoryService.getOrThrow(request.categoryId)
+        categoryService.getCategoryManager().getByIdOrThrow(request.categoryId)
         return withContext(Dispatchers.IO) {
             brandService.getEnabledOrThrowSync(request.brandId)
             createSync(request)
@@ -44,7 +54,7 @@ class ProductService(
     }
 
     suspend fun update(productId: ProductId, request: ProductCreateOrUpdateRequest) {
-        categoryService.getOrThrow(request.categoryId)
+        categoryService.getCategoryManager().getByIdOrThrow(request.categoryId)
         withContext(Dispatchers.IO) {
             brandService.getEnabledOrThrowSync(request.brandId)
             updateSync(productId, request)

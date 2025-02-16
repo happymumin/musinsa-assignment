@@ -1,4 +1,4 @@
-package com.musinsa.coordinator.domain.product.dto
+package com.musinsa.coordinator.domain.product.rest.dto
 
 import com.musinsa.coordinator.util.BrandId
 import com.musinsa.coordinator.util.CategoryId

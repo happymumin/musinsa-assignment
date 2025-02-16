@@ -1,4 +1,4 @@
-package com.musinsa.coordinator.domain.brand.dto
+package com.musinsa.coordinator.domain.brand.rest.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 

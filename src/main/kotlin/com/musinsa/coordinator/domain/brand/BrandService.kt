@@ -1,7 +1,7 @@
 package com.musinsa.coordinator.domain.brand
 
-import com.musinsa.coordinator.domain.brand.dto.BrandCreateOrUpdateRequest
 import com.musinsa.coordinator.domain.brand.rest.BrandErrorCode
+import com.musinsa.coordinator.domain.brand.rest.dto.BrandCreateOrUpdateRequest
 import com.musinsa.coordinator.util.BrandId
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

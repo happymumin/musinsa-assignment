@@ -1,8 +1,7 @@
-package com.musinsa.coordinator.integration
+package com.musinsa.coordinator.domain.brand
 
-import com.musinsa.coordinator.domain.brand.Brand
-import com.musinsa.coordinator.domain.brand.BrandRepository
-import com.musinsa.coordinator.domain.brand.dto.BrandCreateOrUpdateRequest
+import com.musinsa.coordinator.domain.brand.rest.dto.BrandCreateOrUpdateRequest
+import com.musinsa.coordinator.integration.IntegrationTest
 import com.musinsa.coordinator.integration.client.TestClient
 import com.musinsa.coordinator.testutil.assertBadRequest
 import com.musinsa.coordinator.testutil.assertNotFound

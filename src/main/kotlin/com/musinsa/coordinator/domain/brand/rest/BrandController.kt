@@ -1,8 +1,8 @@
 package com.musinsa.coordinator.domain.brand.rest
 
 import com.musinsa.coordinator.domain.brand.BrandService
-import com.musinsa.coordinator.domain.brand.dto.BrandCreateOrUpdateRequest
-import com.musinsa.coordinator.domain.brand.dto.BrandCreateResponse
+import com.musinsa.coordinator.domain.brand.rest.dto.BrandCreateOrUpdateRequest
+import com.musinsa.coordinator.domain.brand.rest.dto.BrandCreateResponse
 import com.musinsa.coordinator.util.BrandId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

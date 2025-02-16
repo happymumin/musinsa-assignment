@@ -1,8 +1,8 @@
 package com.musinsa.coordinator.domain.product.rest
 
 import com.musinsa.coordinator.domain.product.ProductService
-import com.musinsa.coordinator.domain.product.dto.ProductCreateOrUpdateRequest
-import com.musinsa.coordinator.domain.product.dto.ProductCreateResponse
+import com.musinsa.coordinator.domain.product.rest.dto.ProductCreateOrUpdateRequest
+import com.musinsa.coordinator.domain.product.rest.dto.ProductCreateResponse
 import com.musinsa.coordinator.util.ProductId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

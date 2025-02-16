@@ -27,15 +27,22 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.arrow-kt:arrow-fx-coroutines:1.1.3") // https://arrow-kt.io/learn/quickstart/
+
+    implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+    implementation("com.querydsl:querydsl-collections:5.1.0")
+    implementation("com.querydsl:querydsl-sql:5.1.0")
+    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
@@ -46,6 +53,14 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
+
+//idea {
+//    module {
+//        val kaptMain = file("build/generated/source/kapt/main")
+//        sourceDirs.add(kaptMain)
+//        generatedSourceDirs.add(kaptMain)
+//    }
+//}
 
 kotlin {
     compilerOptions {
