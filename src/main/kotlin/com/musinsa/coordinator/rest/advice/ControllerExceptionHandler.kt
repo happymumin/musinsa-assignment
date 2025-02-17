@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.server.ServerWebInputException
 
 @RestControllerAdvice
 class ControllerExceptionHandler {
@@ -17,6 +18,12 @@ class ControllerExceptionHandler {
     fun handle(e: CustomException): ResponseEntity<ErrorResponse> {
         logger.warn { e }
         return ResponseEntity.status(e.errorCode.httpStatus).body(ErrorResponse(e.errorCode))
+    }
+
+    @ExceptionHandler(ServerWebInputException::class)
+    fun handle(e: ServerWebInputException): ResponseEntity<ErrorResponse> {
+        logger.warn { e }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse("BAD_REQUEST", "잘못된 입력입니다."))
     }
 
     @ExceptionHandler(RuntimeException::class)
